@@ -12,7 +12,7 @@ export default function Home() {
           Frontend-mentor{" "}
           <Link href="/posts/QR-Code-Challenge/main">solution</Link> sites
         </p>
-        <p>Created by Xiangbo </p>
+        <p>Created by Lynx </p>
       </div>
       <div className=""></div>
     </main>
