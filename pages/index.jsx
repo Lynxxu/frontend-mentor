@@ -14,7 +14,8 @@ export default function Home() {
         <div className="text-center w-full h-full">
           <p className="text-2xl font-medium">
             Frontend-mentor{" "}
-            <Link href="/posts/QR-Code-Challenge/main">solution</Link> sites
+            <Link href="/posts/QR-Code-Challenge/main">solution</Link>{" "}
+            <Link href="/posts/Age-calculator/main">sites</Link>
           </p>
           <p>Created by Lynx </p>
         </div>
