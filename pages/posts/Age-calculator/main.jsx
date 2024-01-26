@@ -123,16 +123,16 @@ export default function AgeCalculator() {
       <Head>
         <title>Age Calculator</title>
       </Head>
-      <main className="grid w-full h-screen bg-gray-200 items-center justify-items-center font-calculator ">
-        <div className="max-w-[1440px] w-[90%] h-full max-h-[1000px] bg-white flex rounded-3xl rounded-br-[300px] flex-col items-start">
-          <div className="max-w-[1340px] w-full h-[20%] max-h-[400px] flex ml-24 mt-20">
-            <div className="flex items-center font-semibold text-xl text-gray-500 ">
+      <main className="inset-0 grid w-full h-[100svh] bg-gray-200 items-center justify-items-center font-calculator ">
+        <div className="max-w-[1440px] w-[95%] md:w-[80%] h-full max-h-[500px] sm:max-h-[800px] lg:max-h-[1000px] bg-white flex rounded-3xl rounded-br-[100px] sm:rounded-br-[300px] flex-col items-center lg:items-start">
+          <div className="max-w-[1340px] w-full h-[20%] max-h-[400px] flex sm:ml-10 lg:ml-24 mt-20 justify-center lg:justify-normal">
+            <div className="flex items-center font-semibold sm:text-xl text-gray-500 ">
               <div className="flex flex-col">
-                <p>DAY</p>
+                <p className="sm:text-xs text-xs">DAY</p>
                 <input
                   id="Day"
                   type="text"
-                  className="border-gray-400 border rounded-md mr-10 h-28 w-56 font-bold text-4xl text-black pl-5"
+                  className="border-gray-400 border rounded-md mr-10 md:h-20 md:w-36 xl:h-28 xl:w-56 sm:h-14 sm:w-24 w-12 h-6 font-bold text-sm sm:text-4xl text-black sm:pl-5 pl-1"
                   placeholder="DD"
                   onChange={(e) => {
                     setDay(e.target.value);
@@ -157,10 +157,10 @@ export default function AgeCalculator() {
                 </div>
               </div>
               <div className="flex flex-col" id="Month">
-                MONTH
+                <div className="sm:text-xs text-xs">MONTH</div>
                 <input
                   type="text"
-                  className="border-gray-400 border rounded-md mr-10 h-28 w-56 font-bold text-4xl text-black pl-5"
+                  className="border-gray-400 text-sm border rounded-md mr-10 md:h-20 md:w-36 xl:h-28 xl:w-56 sm:h-14 sm:w-24 w-12 h-6 font-bold sm:text-4xl text-black pl-1 sm:pl-5"
                   placeholder="MM"
                   onChange={(e) => {
                     setMonth(e.target.value);
@@ -180,10 +180,10 @@ export default function AgeCalculator() {
                 </div>
               </div>
               <div className="flex flex-col" id="Year">
-                YEAR
+                <div className="sm:text-xs text-xs">YEAR</div>
                 <input
                   type="text"
-                  className="border-gray-400 border rounded-md mr-5 h-28 w-56 font-bold text-4xl text-black pl-5"
+                  className="border-gray-400 border text-sm rounded-md mr-5 md:h-20 md:w-36 xl:h-28 xl:w-56  sm:h-14 sm:w-24 w-12 h-6 font-bold sm:text-4xl text-black pl-1 sm:pl-5"
                   placeholder="YYYY"
                   onChange={(e) => {
                     setYear(e.target.value);
@@ -204,15 +204,15 @@ export default function AgeCalculator() {
               </div>
             </div>
           </div>
-          <div className="flex flex-row items-center w-full ml-24 mb-10">
-            <hr className="border border-gray w-3/4 " />
+          <div className="flex flex-row items-center sm:ml-10 lg:ml-24 sm:mt-8 w-full justify-center sm:justify-normal">
+            <hr className="border border-gray xl:w-3/4 lg:w-[75%] sm:w-4/5 w-[60%]" />
             <button
               onClick={() => {
                 checkInput(day, month, year);
                 CalculateAge(day, month, year, inputState);
               }}
             >
-              <div className="bg-[#854dff] rounded-full w-[100px] flex items-center justify-center hover:bg-black hover:drop-shadow-xl h-[100px]">
+              <div className="bg-[#854dff] rounded-full w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] md:w-[100px] flex items-center justify-center hover:bg-black hover:drop-shadow-xl md:h-[100px] p-3 sm:p-0 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="46"
@@ -226,7 +226,7 @@ export default function AgeCalculator() {
               </div>
             </button>
           </div>
-          <div className="ml-24 text-[10rem] leading-none font-bold italic">
+          <div className="ml-10 lg:ml-24 mt-5  sm:text-[5rem] md:text-[7rem] xl:text-[10rem] leading-none font-bold italic text-[2.5rem]">
             <p>
               <span className="text-[#854dff]">
                 {outputYear === undefined ? "-- " : outputYear}
