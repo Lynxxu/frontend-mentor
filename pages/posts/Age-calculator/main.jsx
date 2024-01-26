@@ -128,7 +128,7 @@ export default function AgeCalculator() {
           <div className="max-w-[1340px] w-full h-[20%] max-h-[400px] flex sm:ml-10 lg:ml-24 mt-20 justify-center lg:justify-normal">
             <div className="flex items-center font-semibold sm:text-xl text-gray-500 ">
               <div className="flex flex-col">
-                <p className="sm:text-xs text-xs">DAY</p>
+                <p className="sm:text-lg text-xs">DAY</p>
                 <input
                   id="Day"
                   type="text"
@@ -157,7 +157,7 @@ export default function AgeCalculator() {
                 </div>
               </div>
               <div className="flex flex-col" id="Month">
-                <div className="sm:text-xs text-xs">MONTH</div>
+                <div className="sm:text-lg text-xs">MONTH</div>
                 <input
                   type="text"
                   className="border-gray-400 text-sm border rounded-md mr-10 md:h-20 md:w-36 xl:h-28 xl:w-56 sm:h-14 sm:w-24 w-12 h-6 font-bold sm:text-4xl text-black pl-1 sm:pl-5"
@@ -180,7 +180,7 @@ export default function AgeCalculator() {
                 </div>
               </div>
               <div className="flex flex-col" id="Year">
-                <div className="sm:text-xs text-xs">YEAR</div>
+                <div className="sm:text-lg text-xs">YEAR</div>
                 <input
                   type="text"
                   className="border-gray-400 border text-sm rounded-md mr-5 md:h-20 md:w-36 xl:h-28 xl:w-56  sm:h-14 sm:w-24 w-12 h-6 font-bold sm:text-4xl text-black pl-1 sm:pl-5"
