@@ -12,12 +12,25 @@ export default function Home() {
         className={`flex min-h-screen justify-center flex-col items-center p-24`}
       >
         <div className="text-center w-full h-full">
-          <p className="text-2xl font-medium">
-            Frontend-mentor{" "}
-            <Link href="/posts/QR-Code-Challenge/main">solution</Link>{" "}
-            <Link href="/posts/Age-calculator/main">sites</Link>
-          </p>
+          <p className="text-2xl font-medium">Frontend-mentor solution sites</p>
           <p>Created by Lynx </p>
+          <p>
+            {" "}
+            <Link href="/posts/QR-Code-Challenge/main">
+              Static QR code
+            </Link>{" "}
+          </p>
+          <p>
+            <Link href="/posts/Age-calculator/main">Age calculator</Link>
+          </p>
+          <p>
+            <Link href="/posts/Advice generator/main.jsx">
+              Advice generator
+            </Link>
+          </p>
+          <p>
+            <Link href="/posts/Tensei-simulator/main">Tensei Simulator</Link>
+          </p>
         </div>
         <div className=""></div>
       </main>
