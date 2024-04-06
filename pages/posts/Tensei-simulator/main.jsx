@@ -3,6 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import Papa from "papaparse";
 import Script from "next/script";
 
+/** 
+This is a personal project written by Lynx using Next, React and tailwind. It's simply a reincarnation simulation.
+The data is acquired from the UN, the svg map is from wikicommons, the csv parser uses papaparse and 
+the map zoom functionalities is fulfuilled by the svg-pan-zoom API. A separate worker is used to conduct data process, consdierable amount of asnyc prog.
+**/
+
 async function dataFetch() {
   try {
     const response = await fetch(
@@ -15,7 +21,6 @@ async function dataFetch() {
 
     const result = await parsedPromise;
     return result.data;
-    
   } catch (error) {
     //this takes the result of the last step, which is the string of csv and parse it using the papa api. Since the papa api is synchronus, we make it async.
     console.error("Parse error:", error);
@@ -23,6 +28,89 @@ async function dataFetch() {
 }
 
 export default function Home() {
+  const [lastHighlightedCountryName, setLastHighlightedCountryName] =
+    useState(null);
+
+  function applyFillColor(node, offTime = null) {
+    if (node.nodeType === 1 && node.nodeName.toLowerCase() !== "title") {
+      node.classList.add("highlighted"); // Apply fill color
+      // Recursively apply fill color to all children of the current node
+      node.childNodes.forEach((e) => applyFillColor(e, offTime));
+    }
+
+    if (
+      node.nodeType === 1 &&
+      node.nodeName.toLowerCase() !== "title" &&
+      offTime !== null
+    ) {
+      node.classList.add("highlighted"); // Apply fill color
+      setTimeout(() => {
+        node.classList.remove("highlighted");
+      }, offTime);
+      // Recursively apply fill color to all children of the current node
+      node.childNodes.forEach((e) => applyFillColor(e, offTime));
+    }
+  }
+
+  function removeColor(node){
+    if (node.nodeType === 1 && node.nodeName.toLowerCase() !== "title") {
+      node.classList.remove("highlighted"); // Apply fill color
+      // Recursively apply fill color to all children of the current node
+      node.childNodes.forEach((e) => removeColor(e));
+    }
+    if (
+      node.nodeType === 1 &&
+      node.nodeName.toLowerCase() !== "title" 
+    )  {
+        node.classList.remove("highlighted");
+  }}
+
+  function highlightReincarnatedCountry(
+    countryObj,
+    startRdmHighlight,
+    isPermanent = false
+  ) {
+    // Process random countries with a delay
+
+    if (lastHighlightedCountryName && isPermanent == false) {
+      removeColor(document
+        .getElementById("worldMap")
+        .contentDocument.getElementById(lastHighlightedCountryName)
+      )
+    }
+
+    if (startRdmHighlight) {
+      let rndCountryList = countryObj[5].filter((e) => e != undefined);
+
+      rndCountryList.forEach((countryCode, index) => {
+        setTimeout(() => {
+          let rndCountryElement = document
+            .getElementById("worldMap")
+            .contentDocument.getElementById(countryCode.toLowerCase());
+          if (rndCountryElement && rndCountryElement != undefined) {
+            applyFillColor(rndCountryElement, 100);
+          }
+        }, 100 * index); // Delay increases for each country, which makes the country highlight only after the first one has disappeared
+      });
+
+      setLastHighlightedCountryName(countryObj[1]);
+
+      let countryElement = document
+        .getElementById("worldMap")
+        .contentDocument.getElementById(countryObj[1]);
+
+      setTimeout(() => {
+        applyFillColor(countryElement); // Highlight the last generated country permanently
+      }, 100 * rndCountryList.length);
+    }
+
+    console.log(
+      `Country: ${countryObj[0]} 
+      \nTotal birth at the year: ${countryObj[3]}
+      \nProbability: ${countryObj[4] * 100} %`
+    );
+  }
+
   async function calculate(year) {
     try {
       const parsedData = await dataFetch(); //fetch and parse data
@@ -30,7 +118,10 @@ export default function Home() {
       worker.postMessage({ parsedData, year }); //send message to the worker
 
       worker.onmessage = function (e) {
-        console.log("calculation:", e.data); //peform action on the result
+        //peform action on the result
+        highlightReincarnatedCountry(e.data, true);
+        // let countrySvg = document.getElementById('in')
+        // console.log(countrySvg)
         worker.terminate();
       };
       worker.onerror = function (e) {
@@ -40,37 +131,35 @@ export default function Home() {
       console.log("failed to process data:", error);
     }
   }
-  function randomHighlightMap() {}
-  const [loaded, setLoaded] = useState(false)
+
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const mapElement = document.getElementById('worldMap')
-    function onObjectLoad(){
-      setLoaded(true)
-      var panZoomMap = svgPanZoom(document.getElementById("worldMap"), {
-        minzoom:0.8,
-        zoomscalesensitivity: 0.25,
+    let mapElement = document.getElementById("worldMap");
+    const onObjectLoad = () => {
+      svgPanZoom(mapElement, {
+        minzoom: 0.8,
+        zoomScaleSensitivity: 0.25,
         controlIconsEnabled: true,
-        contain:true,
-        center:true
-    }   
-    )};
-    mapElement.addEventListener('load', onObjectLoad)
-    return()=>{
-      mapElement.removeEventListener('load', onObjectLoad)
-    }
-  },[]);
+        contain: true,
+        center: true,
+      });
+    };
 
-  
+    mapElement.addEventListener("load", onObjectLoad);
+
+    return () => {
+      mapElement.removeEventListener("load", onObjectLoad);
+    };
+  }, []);
 
   return (
     <>
-   
       <Head>
         <title>Tensei simulator</title>
         <script async src="/Tensei simulator/svg-pan-zoom.js" />
       </Head>
-      
+
       <main className="flex justify-center items-center flex-col m-10 ">
         <div>
           <p className="font-bold text-2xl my-2">Introduction</p>
@@ -96,7 +185,12 @@ export default function Home() {
           id="mapContainer"
           className="max-w-[100vw] w-full max-h-[605px] h-full border border-rose-200 mt-10 overflow-hidden"
         >
-        <object id='worldMap' type="image/svg+xml" className="max-w-[100vw] w-full max-h-[605px] h-[100vh]" data="\Tensei simulator\BlankMap-World.svg"></object>
+          <object
+            id="worldMap"
+            type="image/svg+xml"
+            className="max-w-[100vw] w-full max-h-[605px] h-[100vh]"
+            data="\Tensei simulator\BlankMap-World.svg"
+          ></object>
         </div>
         <button
           onClick={() => calculate(2021)}

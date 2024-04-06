@@ -62,6 +62,23 @@
 	fill: #c7cad9
 }
 
+.highlighted
+{
+	fill: blue;
+	stroke: #ffffff;
+	stroke-width: 0.5;
+	fill-rule: evenodd;
+	pointer-events: all;
+}
+
+.highlighted:hover {
+	fill: red
+}
+
+g .coastxx:hover .highlighted{
+	fill: red
+}
+
 /*
  * Styles for coastlines of islands and continents with no borders on them
  * (all of them should also belong to the class "landxx" - to allow for all land to be modified at once by refining "landxx" style's definition further down)
