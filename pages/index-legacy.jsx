@@ -31,9 +31,6 @@ export default function Home() {
           <p>
             <Link href="/posts/Tensei-simulator/main">Tensei Simulator</Link>
           </p>
-          <p>
-            <Link href="/posts/Chord-imge-generator/main">Chord Image Generator</Link>
-          </p>
         </div>
         <div className=""></div>
       </main>

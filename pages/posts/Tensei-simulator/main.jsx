@@ -1,7 +1,9 @@
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import Papa from "papaparse";
+// import BackgroundRain from '../../components/Background' //this path is relative to the main.jsx, which is this file.
 import Script from "next/script";
+// import NavBar from "@/pages/components/navbar";
 
 /** 
 This is a personal project written by Lynx using Next, React and tailwind. It's simply a reincarnation simulation.
@@ -31,6 +33,8 @@ export default function Home() {
   const [lastHighlightedCountryName, setLastHighlightedCountryName] =
     useState(null);
 
+  const [isTenseing, setIsTenseing] = useState(false);
+
   function applyFillColor(node, offTime = null) {
     if (node.nodeType === 1 && node.nodeName.toLowerCase() !== "title") {
       node.classList.add("highlighted"); // Apply fill color
@@ -52,18 +56,16 @@ export default function Home() {
     }
   }
 
-  function removeColor(node){
+  function removeColor(node) {
     if (node.nodeType === 1 && node.nodeName.toLowerCase() !== "title") {
       node.classList.remove("highlighted"); // Apply fill color
       // Recursively apply fill color to all children of the current node
       node.childNodes.forEach((e) => removeColor(e));
     }
-    if (
-      node.nodeType === 1 &&
-      node.nodeName.toLowerCase() !== "title" 
-    )  {
-        node.classList.remove("highlighted");
-  }}
+    if (node.nodeType === 1 && node.nodeName.toLowerCase() !== "title") {
+      node.classList.remove("highlighted");
+    }
+  }
 
   function highlightReincarnatedCountry(
     countryObj,
@@ -71,12 +73,13 @@ export default function Home() {
     isPermanent = false
   ) {
     // Process random countries with a delay
-
+    setIsTenseing(true)
     if (lastHighlightedCountryName && isPermanent == false) {
-      removeColor(document
-        .getElementById("worldMap")
-        .contentDocument.getElementById(lastHighlightedCountryName)
-      )
+      removeColor(
+        document
+          .getElementById("worldMap")
+          .contentDocument.getElementById(lastHighlightedCountryName)
+      );
     }
 
     if (startRdmHighlight) {
@@ -101,6 +104,7 @@ export default function Home() {
 
       setTimeout(() => {
         applyFillColor(countryElement); // Highlight the last generated country permanently
+        setIsTenseing(false)
       }, 100 * rndCountryList.length);
     }
 
@@ -112,6 +116,7 @@ export default function Home() {
   }
 
   async function calculate(year) {
+    console.log("Calculation state changed:", isTenseing);
     try {
       const parsedData = await dataFetch(); //fetch and parse data
       const worker = new Worker("/Tensei simulator/pCalculator.js"); //the path is relative to the public folder
@@ -131,8 +136,6 @@ export default function Home() {
       console.log("failed to process data:", error);
     }
   }
-
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let mapElement = document.getElementById("worldMap");
@@ -159,10 +162,33 @@ export default function Home() {
         <title>Tensei simulator</title>
         <script async src="/Tensei simulator/svg-pan-zoom.js" />
       </Head>
-
-      <main className="flex justify-center items-center flex-col m-10 ">
+      {/* <NavBar/> */}
+    {/* |  <div><BackgroundRain/></div> */}
+      <main className="bg-gray-100 min-h-screen">
+        <div className=" flex justify-center items-center flex-col p-10">
+      <p className="font-bold text-2xl my-2 text-center">Tensei simulator</p>
+        {/* Add the hover on element and magnify glass */}
+        <div
+          id="mapContainer"
+          className="max-w-[100vw] w-full max-h-[605px] h-full border mt-10 overflow-hidden bg-white"
+        >
+          <object
+            id="worldMap"
+            type="image/svg+xml"
+            className="max-w-[100vw] w-full max-h-[605px] h-[100vh]"
+            data="\Tensei simulator\BlankMap-World.svg"
+          ></object>
+        </div>
+        <button
+          onClick={() => {calculate(2021)}}
+          disabled={isTenseing}
+          className="mt-5 w-[80px] h-[40px] border border-gray-200 bg-white rounded-lg drop-shadow-md hover:drop-shadow-sm hover:broder-sm"
+        >
+          Tensei!
+        </button>
         <div>
-          <p className="font-bold text-2xl my-2">Introduction</p>
+   
+          <br />
           <p>
             If, unfortunately, you are sick of the endless suffering and
             struggle of this life in this world, and you wished to see where you
@@ -180,24 +206,7 @@ export default function Home() {
             income group are also calculated.
           </p>
         </div>
-        {/* Add the hover on element and magnify glass */}
-        <div
-          id="mapContainer"
-          className="max-w-[100vw] w-full max-h-[605px] h-full border border-rose-200 mt-10 overflow-hidden"
-        >
-          <object
-            id="worldMap"
-            type="image/svg+xml"
-            className="max-w-[100vw] w-full max-h-[605px] h-[100vh]"
-            data="\Tensei simulator\BlankMap-World.svg"
-          ></object>
         </div>
-        <button
-          onClick={() => calculate(2021)}
-          className="mt-5 w-[80px] h-[40px] border border-gray-200 bg-gray-200 rounded-lg drop-shadow-md hover:drop-shadow-sm hover:broder-sm"
-        >
-          Tensei!
-        </button>
       </main>
     </>
   );
