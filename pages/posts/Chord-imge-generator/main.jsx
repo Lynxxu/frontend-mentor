@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { jsPDF } from "jspdf";
+import Image from 'next/image';
 
 const ChordImageGenerator = () => {
   const [chordInput, setChordInput] = useState('');
@@ -90,7 +91,7 @@ const ChordImageGenerator = () => {
         </h1>
         
         <p className="text-lg text-center mb-8 text-gray-600">
-          Enter chord codes separated by commas (e.g., C, Am, G7) in the input below and click "Generate" to see chord diagrams.
+          Enter chord codes separated by commas (e.g., C, Am, G7) in the input below and click &quot;Generate&quot; to see chord diagrams.
         </p>
         
         <div className="max-w-md mx-auto flex gap-4">
@@ -112,10 +113,10 @@ const ChordImageGenerator = () => {
         <div ref={containerRef} className="mt-8 flex flex-wrap justify-center gap-4">
           {chordImages.length > 0 ? (
             chordImages.map((src, index) => (
-              <img key={index} src={src} alt={`Chord ${index + 1}`} className="w-32 h-32 object-contain" />
+              <Image key={index} src={src} alt={`Chord ${index + 1}`} width={128} height={128} objectFit="contain" />
             ))
           ) : (
-            <p className="text-gray-600">Enter chords and click "Generate" to see diagrams</p>
+            <p className="text-gray-600">Enter chords and click &quot;Generate&quot; to see diagrams</p>
           )}
         </div>
 
